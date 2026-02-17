@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body class="p-0 mx-4">
+
+    <div class="row p-0 m-0">
+
+        <div class="col-12 mt-3">
+
+        </div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="alimento-tab" data-bs-toggle="tab" data-bs-target="#alimento-tab-pane" type="button" role="tab" aria-controls="alimento-tab-pane" aria-selected="true">Alimentos</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="comida-tab" data-bs-toggle="tab" data-bs-target="#comida-tab-pane" type="button" role="tab" aria-controls="comida-tab-pane" aria-selected="false">Comidas</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="alimento-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+    
+                <div class="row p-0 mt-3">
+                    <div class="col-3">
+                        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modalAlimento" >Agregar alimento</button>
+                    </div>
+                </div>
+    
+                <div class="row ">
+ 
+                    <div class="col-12 table-responsive">
+                        
+                        <table class="table">
+                            <thead>
+                                <th>Nombre</th>
+                                <th>kcal</th>
+                                <th>proteina</th>
+                                <th>carbohidrato</th>
+                                <th>grasa</th>
+                            </thead>
+                            <tbody id="tbody_alimento"></tbody>
+                        </table>
+    
+                    </div>
+                </div>
+    
+            </div>
+            <div class="tab-pane fade" id="comida-tab-pane" role="tabpanel" aria-labelledby="comida-tab" tabindex="0">
+    
+    
+                <div class="row p-0 mt-3">
+                    <div class="col-2">
+                        <button class="btn btn-primary" type="button" onclick="showModalComida()" >Agregar comida</button>
+                    </div>
+                    
+                    <div class="col-2">
+                        Total Calorias del día: <span id="total_calorias"></span>
+                    </div>
+                    <div class="col-2">
+                        Total proteinas del día: <span id="total_proteina"></span>
+                    </div>
+                    <div class="col-2">
+                        Total carbohidratos del día: <span id="total_carbos"></span>
+                    </div>
+                    <div class="col-2">
+                        Total grasas del día: <span id="total_grasas"></span>
+                    </div>
+                </div>
+
+
+                <div class="row ">
+ 
+                    <div class="col-12 table-responsive">
+                        
+                        <table class="table">
+                            <thead>
+                                <th>Nombre</th>
+                                <th>kcal</th>
+                                <th>proteina</th>
+                                <th>carbohidrato</th>
+                                <th>grasa</th>
+                            </thead>
+                            <tbody id="tbody_comida"></tbody>
+                        </table>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+    <div class="modal fade" tabindex="-1" id="modalAlimento">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar alimento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form onsubmit="crearAlimento(event)">
+            <div class="modal-body">
+                <b>Agregar valores por cada 100gr</b>
+                <hr>
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="txt_name" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="txt_nombre_alimento" placeholder="Ingrese el nombre del alimento" step="0.01" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txt_kcal" class="form-label">kcal</label>
+                        <input type="number" class="form-control" id="txt_kcal" placeholder="Ingrese las kcal del alimento" step="0.01" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txt_proteina" class="form-label">Proteina</label>
+                        <input type="number" class="form-control" id="txt_proteina" placeholder="Ingrese las proteinas del alimento" step="0.01" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txt_carbo" class="form-label">Carbohidratos</label>
+                        <input type="number" class="form-control" id="txt_carbo" placeholder="Ingrese los carbohidratos del alimento" step="0.01" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txt_grasa" class="form-label">Grasas</label>
+                        <input type="number" class="form-control" id="txt_grasa" placeholder="Ingrese las grasas del alimento" step="0.01" min="0" required>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-success" >Guardar Alimento</button>
+            </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" tabindex="-1" id="modalComida">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar comida</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form onsubmit="crearComida( event )">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="txt_nombre_comida" class="form-label">Nombre comida</label>
+                                <input type="text" class="form-control" id="txt_nombre_comida" placeholder="Ingrese el nombre de la comida" required>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-5">
+    
+                            <div class="mb-3">
+                                <label for="txt_name" class="form-label">Alimento</label>
+                                <select id="drop_alimento" class="form-control" required> </select>
+                            </div>
+                        </div>
+    
+                        <div class="col-5">
+                            <div class="mb-3">
+                                <label for="txt_gr" class="form-label">gramos</label>
+                                <input type="number" class="form-control" id="txt_gr" placeholder="Ingrese las gr del alimento" required>
+                            </div>
+                        </div>
+
+                        <div class="col-1">
+                            <br>
+                            <button type="button" class="btn btn-primary btn-sm mt-2 float-end" onclick="agregarAlimentoAComida()">+</button>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="col-12 table-responsive">
+                        
+                                <table class="table">
+                                    <thead>
+                                        <th>Alimento</th>
+                                        <th>kcal</th>
+                                        <th>proteina</th>
+                                        <th>carbohidrato</th>
+                                        <th>grasa</th>
+                                    </thead>
+                                    <tbody id="tbody_alimento_comida"></tbody>
+                                </table>
+        
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success" >Guardar Comida</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="/js/alimento.js"></script>
+    <script src="/js/comida.js"></script>
+
+    <script>
+
+        
+        let alimentoArray = [];
+        document.addEventListener("DOMContentLoaded", function() {
+            getLocalStorage()
+            getLocalStorageComida()
+            fillTableAlimento()
+            fillTableComida()
+            fillDropDownAlimento()
+            total()
+        });
+
+    </script>
+</body>
+</html>
