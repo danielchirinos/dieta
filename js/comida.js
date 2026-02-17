@@ -190,8 +190,11 @@ function total(){
 
     let totalCalorias = totalProteina = totalCarbos = totalGrasas = 0;
 
+    const fecha = new Date().toISOString().split('T')[0];
+    const nuevoArreglo = comidaArray.find( co => co.fecha === fecha )
 
-    for (const comida of comidaArray) {
+
+    for (const comida of nuevoArreglo) {
 
         if( comida.detalleComida.length === undefined ){
 
