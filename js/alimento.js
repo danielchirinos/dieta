@@ -1,4 +1,7 @@
 
+const modalEditarAlimento = new bootstrap.Modal(document.getElementById('modalEditarAlimento'));
+
+let alimentoId = null;
 
 
 function crearAlimento( event ){
@@ -19,6 +22,8 @@ function crearAlimento( event ){
     saveLocalStorage( data )
 }
 
+
+
 function fillTableAlimento(){
 
     const tbody = document.getElementById("tbody_alimento")
@@ -36,6 +41,11 @@ function fillTableAlimento(){
                 <td>${alimento.proteina}</td>
                 <td>${alimento.carbohidrato}</td>
                 <td>${alimento.grasa}</td>
+                <td>
+                    <button class="btn btn-outline-success btn-sm" onclick="showModalEditAlimento('${alimento.id}')">
+                        <i class="fa-solid fa-pencil"></i>
+                    </button>
+                </td>
             </tr>
         `
     }
@@ -112,4 +122,70 @@ function fillDropDownAlimento(){
     
     
 }
+
+
+
+// editar alimento
+    function showModalEditAlimento( alimentoIdParam ){
+
+        console.log(alimentoArray);
+        if( !alimentoIdParam ){
+            return false;
+        } 
+
+        alimentoId = alimentoIdParam
+
+        const findInArray = alimentoArray.find( al => al.id ==  alimentoId )
+
+        if( !findInArray ){
+            // error
+        }else{
+
+            document.getElementById("txt_nombre_alimento_edit").value = findInArray.alimento
+            document.getElementById("txt_kcal_edit").value = findInArray.kcal
+            document.getElementById("txt_proteina_edit").value = findInArray.proteina
+            document.getElementById("txt_carbo_edit").value = findInArray.carbohidrato
+            document.getElementById("txt_grasa_edit").value = findInArray.grasa            
+        }
+
+        modalEditarAlimento.show()
+    }
+
+
+    function editarAlimento( event ){
+
+        
+        event.preventDefault()
+
+        if( !alimentoId ){
+            return false;
+        }   
+
+        const findInArray = alimentoArray.find( al => al.id ==  alimentoId )
+
+         if( !findInArray ){
+            // error
+        }else{
+        
+            findInArray.alimento = document.getElementById("txt_nombre_alimento_edit").value
+            findInArray.kcal = document.getElementById("txt_kcal_edit").value
+            findInArray.proteina = document.getElementById("txt_proteina_edit").value
+            findInArray.carbohidrato =  document.getElementById("txt_carbo_edit").value
+            findInArray.grasa =  document.getElementById("txt_grasa_edit").value
+
+        }
+        
+
+        localStorage.setItem( "dietaapp", JSON.stringify( alimentoArray ) )
+
+        fillTableAlimento()
+
+        modalEditarAlimento.hide()
+
+        showToast( { type: "success", message: "Alimento guardado con éxito" } )
+        
+    }
+
+
+// fin editar alimento
 

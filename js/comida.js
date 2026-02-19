@@ -25,7 +25,7 @@ function crearComida( event ){
     data = null;
     detalleComida = [];
     const fecha = new Date().toISOString().split('T')[0];
-    for (const alCo of alimentoEnComida) {
+    for ( const alCo of alimentoEnComida ) {
         detalleComida.push({
             "kcal": alCo.kcal,
             "proteina": alCo.proteina,
@@ -42,6 +42,11 @@ function crearComida( event ){
     saveLocalStorageComida( data )
     
     alimentoEnComida = []
+
+    modalComida.hide()
+    showToast( { type: "success", message: "Comida agregada con éxito" } )
+    fillTableComida()
+    
 }
 
 function agregarAlimentoAComida(){
@@ -53,7 +58,6 @@ function agregarAlimentoAComida(){
         return false;
     }
 
-    debugger;
     const alimentoAgregadoEnComidaActual = alimentoEnComida.find( co => co.alimentoId == alimentoId )
 
     if( alimentoAgregadoEnComidaActual &&  alimentoAgregadoEnComidaActual != undefined){
@@ -144,12 +148,16 @@ function fillTableComida(){
 
     const tbody = document.getElementById("tbody_comida")
 
+    
     if( comidaArray.length == 0 ){
         return false
     }
 
+    const fecha = new Date().toISOString().split('T')[0];
+    const comidaArrayFecha = comidaArray.filter( co => co.fecha === fecha )
+
     tbody.innerHTML = "";
-    for ( const comida of comidaArray ) {
+    for ( const comida of comidaArrayFecha ) {
 
         let kcal = proteina = carbos = grasa = 0
         
@@ -177,11 +185,17 @@ function fillTableComida(){
                 <td>${proteina}</td>
                 <td>${carbos}</td>
                 <td>${grasa}</td>
+                <td>
+                    <button class="btn btn-outline-danger btn-sm" onclick="deleteComida('${comida.nombreComida}', '${comida.fecha}')">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
             </tr>
         `
         
     }
 
+    total()
 
 }
 
@@ -191,7 +205,7 @@ function total(){
     let totalCalorias = totalProteina = totalCarbos = totalGrasas = 0;
 
     const fecha = new Date().toISOString().split('T')[0];
-    const nuevoArreglo = comidaArray.find( co => co.fecha === fecha )
+    const nuevoArreglo = comidaArray.filter( co => co.fecha === fecha )
 
 
     for (const comida of nuevoArreglo) {
@@ -223,3 +237,25 @@ function total(){
     
     
 }
+
+
+async function deleteComida( nombreComida, fecha ){
+
+     const result = await modalConfirm( "Desea eliminar la comida" );
+
+    if( result == 0 ){
+        showToast( { type: "warning", message: "Accion cancelada" } )
+    } 
+    
+    comidaArray = comidaArray.filter( co => co.nombreComida !== nombreComida || co.fecha !== fecha )  
+
+    localStorage.setItem( "comidaapp", JSON.stringify( comidaArray ) )
+
+    fillTableComida()
+
+    showToast( { type: "success", message: "Comida eliminada" } )
+
+}
+
+
+

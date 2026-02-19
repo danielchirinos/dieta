@@ -6,6 +6,9 @@
     <title>Document</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css">
+    
 </head>
 <body class="p-0 mx-4">
 
@@ -26,10 +29,12 @@
             <div class="tab-pane fade show active" id="alimento-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
     
                 <div class="row p-0 mt-3">
-                    <div class="col-3">
-                        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modalAlimento" >Agregar alimento</button>
+                    <div class="col-12 col-sm-3">
+                        <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#modalAlimento" >Agregar alimento</button>
                     </div>
                 </div>
+
+                <br>
     
                 <div class="row ">
  
@@ -42,6 +47,7 @@
                                 <th>proteina</th>
                                 <th>carbohidrato</th>
                                 <th>grasa</th>
+                                <th>acciones</th>
                             </thead>
                             <tbody id="tbody_alimento"></tbody>
                         </table>
@@ -54,26 +60,26 @@
     
     
                 <div class="row p-0 mt-3">
-                    <div class="col-2">
-                        <button class="btn btn-primary" type="button" onclick="showModalComida()" >Agregar comida</button>
+                    <div class="col-12 col-sm-3">
+                        <button class="btn btn-primary w-100" type="button" onclick="showModalComida()" >Agregar comida</button>
                     </div>
                     
-                    <div class="col-2">
+                    <div class="col-12 col-sm-2 mt-2">
                         Total Calorias del día: <span id="total_calorias"></span>
                     </div>
-                    <div class="col-2">
+                    <div class="col-12 col-sm-2">
                         Total proteinas del día: <span id="total_proteina"></span>
                     </div>
-                    <div class="col-2">
+                    <div class="col-12 col-sm-2">
                         Total carbohidratos del día: <span id="total_carbos"></span>
                     </div>
-                    <div class="col-2">
+                    <div class="col-12 col-sm-2">
                         Total grasas del día: <span id="total_grasas"></span>
                     </div>
                 </div>
 
 
-                <div class="row ">
+                <div class="row mt-2">
  
                     <div class="col-12 table-responsive">
                         
@@ -84,6 +90,7 @@
                                 <th>proteina</th>
                                 <th>carbohidrato</th>
                                 <th>grasa</th>
+                                <th>Acciones</th>
                             </thead>
                             <tbody id="tbody_comida"></tbody>
                         </table>
@@ -96,7 +103,7 @@
 
     
 
-
+    <!-- modal crear alimento -->
     <div class="modal fade" tabindex="-1" id="modalAlimento">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -140,6 +147,53 @@
             </div>
         </div>
     </div>
+
+    <!-- TODO: refacrogin y usar el modal de crear para editar tambien -->
+    <!-- modal crear alimento -->
+    <div class="modal fade" tabindex="-1" id="modalEditarAlimento">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar alimento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form onsubmit="editarAlimento(event)">
+            <div class="modal-body">
+                <b>Agregar valores por cada 100gr</b>
+                <hr>
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="txt_name" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="txt_nombre_alimento_edit" placeholder="Ingrese el nombre del alimento" step="0.01" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txt_kcal" class="form-label">kcal</label>
+                        <input type="number" class="form-control" id="txt_kcal_edit" placeholder="Ingrese las kcal del alimento" step="0.01" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txt_proteina" class="form-label">Proteina</label>
+                        <input type="number" class="form-control" id="txt_proteina_edit" placeholder="Ingrese las proteinas del alimento" step="0.01" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txt_carbo" class="form-label">Carbohidratos</label>
+                        <input type="number" class="form-control" id="txt_carbo_edit" placeholder="Ingrese los carbohidratos del alimento" step="0.01" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txt_grasa" class="form-label">Grasas</label>
+                        <input type="number" class="form-control" id="txt_grasa_edit" placeholder="Ingrese las grasas del alimento" step="0.01" min="0" required>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-success" >Guardar Alimento</button>
+            </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    
     
     <div class="modal fade" tabindex="-1" id="modalComida">
         <div class="modal-dialog modal-lg">
@@ -218,9 +272,42 @@
         </div>
     </div>
 
+
+    <!-- toast -->
+     <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="dieta_toast" class="toast " role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success text-white" id="toast_header">
+                <strong class="me-auto " id="toast_title"></strong>
+            </div>
+            <div class="toast-body" id="toast_message"></div>
+        </div>
+    </div>
+
+
+    <!-- modal mostrar detalle PODe -->
+    <div id="modalConfirmacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="CenterModalLabel" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="titulo_asignar" class="modal-title">Confirmación</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="label_mensaje_confirmacion"> </p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-secondary waves-effect" id="btn_cancelar">Cancelar</a>
+                    <a href="#" class="btn btn-primary waves-effect" id="btn_ok">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- modal asignar viaje -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="js/alimento.js"></script>
     <script src="js/comida.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/confirm.js"></script>
 
     <script>
 
