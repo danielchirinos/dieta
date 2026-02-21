@@ -1,7 +1,7 @@
 
 let comidaArray = [];
 let alimentoEnComida = [];
-const modalComida = new bootstrap.Modal(document.getElementById('modalComida'));
+const modalComida = new bootstrap.Modal( document.getElementById('modalComida') );
 
 function showModalComida(){
 

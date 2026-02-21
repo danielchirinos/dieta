@@ -41,7 +41,7 @@
                     </div>
                     
                     <div class="col-12 col-sm-3 mt-2 mt-sm-0">
-                        <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal" data-bs-target="#modalCopyFood" >
+                        <button class="btn btn-outline-success w-100" type="button" onclick="showModalImportData('food')" >
                             <i class="fa-solid fa-file-arrow-up"></i> Importar Alimentos
                         </button>
                     </div>
@@ -79,9 +79,15 @@
                         <button class="btn btn-primary w-100" type="button" onclick="showModalComida()" >Agregar comida</button>
                     </div>
 
-                     <div class="col-12 col-sm-3 mt-2 mt-sm-0">
+                    <div class="col-12 col-sm-3 mt-2 mt-sm-0">
                         <button class="btn btn-outline-secondary w-100" type="button" onclick="copyMeals()" >
                             <i class="fa-solid fa-file-arrow-down"></i> Copiar Comidas
+                        </button>
+                    </div>
+
+                    <div class="col-12 col-sm-3 mt-2 mt-sm-0">
+                        <button class="btn btn-outline-success w-100" type="button" onclick="showModalImportData('meals')" >
+                            <i class="fa-solid fa-file-arrow-up"></i> Importar Comidas
                         </button>
                     </div>
                     
@@ -107,7 +113,7 @@
                         <input type="date" class="form-control" id="text_date">
                     </div>
                     <div class="col-12 col-sm-3 mt-2 mt-sm-0">
-                        <button class="btn btn-outline-primary w-100" type="button" onclick="findMeals()" >Agregar comida</button>
+                        <button class="btn btn-outline-primary w-100" type="button" onclick="findMeals()" >Buscar</button>
                     </div>
                     
 
@@ -337,30 +343,31 @@
     </div>
 
     <!-- modal mostrar detalle PODe -->
-    <div id="modalCopyFood" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="CenterModalLabel" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-md modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 id="titulo_asignar" class="modal-title">Importar datos</h4>
-                </div>
-                <div class="modal-body">
-                    <label for="">Pegar datos copiados</label>
-                    <textarea class="form-control" id="textarea_food"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success" onclick="importForCopy()" >Importar datos</button>
+        <div id="modalImportData" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="CenterModalLabel" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-md modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 id="titulo_asignar" class="modal-title">Importar datos de <span id="title_data_import"></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <label for="" >Pegar datos copiados de </label>
+                        <textarea class="form-control" id="textarea_import_data"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success" onclick="importForCopy()" >Importar datos</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-<!-- modal asignar viaje -->
+    <!-- modal asignar viaje -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="js/alimento.js"></script>
     <script src="js/comida.js"></script>
     <script src="js/toast.js"></script>
     <script src="js/confirm.js"></script>
+    <script src="js/dataManager.js"></script>
 
     <script>
 

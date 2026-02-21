@@ -1,6 +1,5 @@
 
-const modalEditarAlimento = new bootstrap.Modal(document.getElementById('modalEditarAlimento'));
-const modalCopyFood = new bootstrap.Modal(document.getElementById('modalCopyFood'));
+const modalEditarAlimento = new bootstrap.Modal( document.getElementById('modalEditarAlimento') );
 
 let alimentoId = null;
 
@@ -225,33 +224,6 @@ function fillDropDownAlimento(){
         const data = localStorage.getItem("dietaapp");
         navigator.clipboard.writeText( data );
         showToast( { type: "success", message: "Datos de alimentos copiados al portapapeles" } )
-    }
-
-    async function importForCopy(){
-
-        
-        const copyData = document.getElementById("textarea_food")
-        
-        if( !copyData || !copyData.value ){
-            showToast( { type: "danger", message: "No existen datos para importar" } )
-            return false;
-        }
-        
-        const result = await modalConfirm( "Desea importar los alimentos, esta accion reemplazara los datos de alimentos que se tiene actualmente" );
-
-        if( result == 0){
-            showToast( { type: "warning", message: "Accion cancelada" } )
-            return false;
-        }
-
-        
-        localStorage.setItem( "dietaapp", copyData.value );
-        getLocalStorage()
-        fillTableAlimento()
-
-
-        document.getElementById( "textarea_food" ).value = ""
-        modalCopyFood.hide()
     }
 
 // fin editar alimento
