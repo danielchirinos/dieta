@@ -26,11 +26,24 @@
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
+            <!-- ALIMENTOS TAB -->
             <div class="tab-pane fade show active" id="alimento-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
     
                 <div class="row p-0 mt-3">
                     <div class="col-12 col-sm-3">
                         <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#modalAlimento" >Agregar alimento</button>
+                    </div>
+
+                    <div class="col-12 col-sm-3 mt-2 mt-sm-0">
+                        <button class="btn btn-outline-secondary w-100" type="button" onclick="copyFood()" >
+                            <i class="fa-solid fa-file-arrow-down"></i> Copiar Alimentos
+                        </button>
+                    </div>
+                    
+                    <div class="col-12 col-sm-3 mt-2 mt-sm-0">
+                        <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal" data-bs-target="#modalCopyFood" >
+                            <i class="fa-solid fa-file-arrow-up"></i> Importar Alimentos
+                        </button>
                     </div>
                 </div>
 
@@ -56,12 +69,20 @@
                 </div>
     
             </div>
+
+            <!-- COMIDAS TAB -->
             <div class="tab-pane fade" id="comida-tab-pane" role="tabpanel" aria-labelledby="comida-tab" tabindex="0">
     
     
                 <div class="row p-0 mt-3">
                     <div class="col-12 col-sm-3">
                         <button class="btn btn-primary w-100" type="button" onclick="showModalComida()" >Agregar comida</button>
+                    </div>
+
+                     <div class="col-12 col-sm-3 mt-2 mt-sm-0">
+                        <button class="btn btn-outline-secondary w-100" type="button" onclick="copyMeals()" >
+                            <i class="fa-solid fa-file-arrow-down"></i> Copiar Comidas
+                        </button>
                     </div>
                     
                     <div class="col-12 col-sm-2 mt-2">
@@ -78,6 +99,19 @@
                     </div>
                 </div>
 
+
+                <div class="row">
+
+                    <div class="col-12 col-sm-3">
+                        <label for="start">Fecha</label>
+                        <input type="date" class="form-control" id="text_date">
+                    </div>
+                    <div class="col-12 col-sm-3 mt-2 mt-sm-0">
+                        <button class="btn btn-outline-primary w-100" type="button" onclick="findMeals()" >Agregar comida</button>
+                    </div>
+                    
+
+                </div>
 
                 <div class="row mt-2">
  
@@ -104,7 +138,7 @@
     
 
     <!-- modal crear alimento -->
-    <div class="modal fade" tabindex="-1" id="modalAlimento">
+    <div class="modal fade" tabindex="-1" id="modalAlimento" >
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
@@ -148,7 +182,7 @@
         </div>
     </div>
 
-    <!-- TODO: refacrogin y usar el modal de crear para editar tambien -->
+    <!-- TODO: refactogin y usar el modal de crear para editar tambien -->
     <!-- modal crear alimento -->
     <div class="modal fade" tabindex="-1" id="modalEditarAlimento">
         <div class="modal-dialog">
@@ -274,7 +308,7 @@
 
 
     <!-- toast -->
-     <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="dieta_toast" class="toast " role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-success text-white" id="toast_header">
                 <strong class="me-auto " id="toast_title"></strong>
@@ -285,7 +319,7 @@
 
 
     <!-- modal mostrar detalle PODe -->
-    <div id="modalConfirmacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="CenterModalLabel" data-backdrop="static" data-keyboard="false">
+    <div id="modalConfirmacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="CenterModalLabel" data-backdrop="static" data-keyboard="false" style="z-index: 2000 !important;">
         <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -297,6 +331,25 @@
                 <div class="modal-footer">
                     <a href="#" class="btn btn-secondary waves-effect" id="btn_cancelar">Cancelar</a>
                     <a href="#" class="btn btn-primary waves-effect" id="btn_ok">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal mostrar detalle PODe -->
+    <div id="modalCopyFood" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="CenterModalLabel" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="titulo_asignar" class="modal-title">Importar datos</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="">Pegar datos copiados</label>
+                    <textarea class="form-control" id="textarea_food"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success" onclick="importForCopy()" >Importar datos</button>
                 </div>
             </div>
         </div>
@@ -314,10 +367,14 @@
         
         let alimentoArray = [];
         document.addEventListener("DOMContentLoaded", function() {
+
+            const fecha = new Date().toLocaleString('sv-SE', {timeZone: 'America/Santiago'}).split(' ')[0];;
+            document.getElementById( "text_date" ).value = fecha;
+
             getLocalStorage()
             getLocalStorageComida()
             fillTableAlimento()
-            fillTableComida()
+            findMeals()
             fillDropDownAlimento()
             total()
         });

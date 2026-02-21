@@ -24,7 +24,7 @@ function crearComida( event ){
 
     data = null;
     detalleComida = [];
-    const fecha = new Date().toISOString().split('T')[0];
+    const fecha = new Date().toLocaleString('sv-SE', {timeZone: 'America/Santiago'}).split(' ')[0];;
     for ( const alCo of alimentoEnComida ) {
         detalleComida.push({
             "kcal": alCo.kcal,
@@ -144,20 +144,12 @@ function saveLocalStorageComida( data ){
 }
 
 
-function fillTableComida(){
+function fillTableComida( mealsArray ){
 
     const tbody = document.getElementById("tbody_comida")
 
-    
-    if( comidaArray.length == 0 ){
-        return false
-    }
-
-    const fecha = new Date().toISOString().split('T')[0];
-    const comidaArrayFecha = comidaArray.filter( co => co.fecha === fecha )
-
     tbody.innerHTML = "";
-    for ( const comida of comidaArrayFecha ) {
+    for ( const comida of comidaArray ) {
 
         let kcal = proteina = carbos = grasa = 0
         
@@ -204,7 +196,7 @@ function total(){
 
     let totalCalorias = totalProteina = totalCarbos = totalGrasas = 0;
 
-    const fecha = new Date().toISOString().split('T')[0];
+    const fecha = new Date().toLocaleString('sv-SE', {timeZone: 'America/Santiago'}).split(' ')[0];;
     const nuevoArreglo = comidaArray.filter( co => co.fecha === fecha )
 
 
@@ -241,10 +233,11 @@ function total(){
 
 async function deleteComida( nombreComida, fecha ){
 
-     const result = await modalConfirm( "Desea eliminar la comida" );
+    const result = await modalConfirm( "Desea eliminar la comida" );
 
     if( result == 0 ){
         showToast( { type: "warning", message: "Accion cancelada" } )
+        return false;
     } 
     
     comidaArray = comidaArray.filter( co => co.nombreComida !== nombreComida || co.fecha !== fecha )  
@@ -257,5 +250,31 @@ async function deleteComida( nombreComida, fecha ){
 
 }
 
+
+
+function findMeals(){
+
+    const date = document.getElementById( "text_date" ).value.trim()
+
+    if( !date ){
+        showToast( { type: "warning", message: "La fecha es obligatoria" } )
+        return false;
+    }
+
+    getLocalStorageComida()
+
+    comidaArray = comidaArray.filter( co => co.fecha ==  date )
+    
+    fillTableComida()
+    
+
+}
+
+
+function copyMeals() {
+    const data = localStorage.getItem("comidaapp");
+    navigator.clipboard.writeText( data );
+    showToast( { type: "success", message: "Datos de copmidas copiados al portapapeles" } )
+}
 
 

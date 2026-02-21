@@ -1,5 +1,6 @@
 
 const modalEditarAlimento = new bootstrap.Modal(document.getElementById('modalEditarAlimento'));
+const modalCopyFood = new bootstrap.Modal(document.getElementById('modalCopyFood'));
 
 let alimentoId = null;
 
@@ -185,7 +186,73 @@ function fillDropDownAlimento(){
         showToast( { type: "success", message: "Alimento guardado con éxito" } )
         
     }
+    
 
+    function exportFodd() {
+        const data = localStorage.getItem("miAppData");
+        
+        if (!data) {
+            alert("No hay datos para exportar");
+            return;
+        }
+
+        const blob = new Blob([data], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "backup-miapp.json";
+        a.click();
+
+        URL.revokeObjectURL(url);
+    }
+
+    function importData( event ) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            localStorage.setItem("miAppData", e.target.result);
+            alert("Datos importados correctamente");
+            location.reload();
+        };
+
+        reader.readAsText(file);
+    }
+
+    function copyFood() {
+        const data = localStorage.getItem("dietaapp");
+        navigator.clipboard.writeText( data );
+        showToast( { type: "success", message: "Datos de alimentos copiados al portapapeles" } )
+    }
+
+    async function importForCopy(){
+
+        
+        const copyData = document.getElementById("textarea_food")
+        
+        if( !copyData || !copyData.value ){
+            showToast( { type: "danger", message: "No existen datos para importar" } )
+            return false;
+        }
+        
+        const result = await modalConfirm( "Desea importar los alimentos, esta accion reemplazara los datos de alimentos que se tiene actualmente" );
+
+        if( result == 0){
+            showToast( { type: "warning", message: "Accion cancelada" } )
+            return false;
+        }
+
+        
+        localStorage.setItem( "dietaapp", copyData.value );
+        getLocalStorage()
+        fillTableAlimento()
+
+
+        document.getElementById( "textarea_food" ).value = ""
+        modalCopyFood.hide()
+    }
 
 // fin editar alimento
 
